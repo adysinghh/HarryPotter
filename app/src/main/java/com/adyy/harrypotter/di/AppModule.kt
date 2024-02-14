@@ -13,21 +13,27 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+
 @InstallIn(SingletonComponent::class)
 @Module
 class AppModule {
-    fun provideRetrofitInstance() = Retrofit.Builder()
+
+    @Provides
+    @Singleton
+    fun provideRetrofitInstance() : Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
         .build()
 
     @Provides
     @Singleton
-    fun provideCharacterApi(retrofit: Retrofit) : CharacterApi = retrofit.create(CharacterApi::class.java)
+    fun provideCharactersApi(retrofit: Retrofit) : CharacterApi = retrofit.create(CharacterApi::class.java)
 
     @Provides
     @Singleton
-    fun provideCharacterRepository(api:CharacterApi) : CharacterRepository {
+    fun provideCharacterRepository(api: CharacterApi) : CharacterRepository {
         return CharacterRepositoryImpl(api)
     }
+
+
 }
